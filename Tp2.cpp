@@ -5,17 +5,20 @@
 
 using namespace std;
 
+//pagetable primitiva(idealmente viraria uma classe mais bem feita em um .hpp)
 typedef struct pagetable
 {
     bool *valid;
     unsigned int *f;
 }pagetable;
 
+//memoria primitiva(idealmente viraria uma classe mais bem feita em um .hpp)
 typedef struct memory
 {
     bool *used;
 }memory;
 
+//obtem o s = número de bytes pouco significativos que serão removidos para encontrar a entrada da tabela de pags
 unsigned int bytes(unsigned int page_size)
 {
 
@@ -32,6 +35,7 @@ unsigned int bytes(unsigned int page_size)
     return s;
 }
 
+//obtem o offset do par (pag,offset)
 unsigned int getOffset(unsigned address, unsigned int s)
 {
     //obtem o offset a partir dos S digitos menos significativos
@@ -44,6 +48,7 @@ unsigned int getOffset(unsigned address, unsigned int s)
     return address & mask;
 }
 
+//tenta alocar uma pagina
 bool allocatePage(memory &m,pagetable &p,unsigned int position,unsigned int mem_pages)
 {
     int i;
@@ -90,6 +95,8 @@ int main(int argc,char*argv[])
     }
     fclose(file);
     */
+
+    //teste breve
     unsigned address = 0x0041f7a0;
     pagetable p;
     memory m;
