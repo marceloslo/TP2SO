@@ -1,71 +1,14 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cstdio>
 #include <string>
 #include <cmath>
 
+#include "pagetable.hpp"
+#include "auxiliaries.hpp"
+#include "fifo.hpp"
+
 using namespace std;
-
-//pagetable primitiva(idealmente viraria uma classe mais bem feita em um .hpp)
-typedef struct pagetable
-{
-    bool *valid;
-    unsigned int *f;
-}pagetable;
-
-//memoria primitiva(idealmente viraria uma classe mais bem feita em um .hpp)
-typedef struct memory
-{
-    bool *used;
-}memory;
-
-//obtem o s = número de bytes pouco significativos que serão removidos para encontrar a entrada da tabela de pags
-unsigned int bytes(unsigned int page_size)
-{
-
-    unsigned int s, tmp;
-    /* Derivar o valor de s: */
-    tmp = page_size;
-    s = 0;
-    while (tmp>1)
-    {
-    tmp = tmp>>1;
-    s++;
-    }
-
-    return s;
-}
-
-//obtem o offset do par (pag,offset)
-unsigned int getOffset(unsigned address, unsigned int s)
-{
-    //obtem o offset a partir dos S digitos menos significativos
-    unsigned mask=0;
-    while(s!=0)
-    {
-        mask = (mask<<1) + 1;
-        s--;
-    }
-    return address & mask;
-}
-
-//tenta alocar uma pagina
-bool allocatePage(memory &m,pagetable &p,unsigned int position,unsigned int mem_pages)
-{
-    int i;
-    for(i=0;i<mem_pages;i++)
-    {
-        //conseguiu alocar uma pagina
-        if(!m.used[i])
-        {
-            p.f[position]=i;
-            p.valid[position]=true;
-            m.used[i]=true;
-            return true;
-        }
-    }
-    //falhou em alocar uma página
-    return false;
-}
 
 int main(int argc,char*argv[])
 {
@@ -75,39 +18,48 @@ int main(int argc,char*argv[])
     unsigned int page_size= atoi(argv[3]) * 1024;//bytes
     unsigned int mem_size=atoi(argv[4) * 1024;//bytes
     */
+
     // Testando sem console
-    string op = "fifo";
-    string filename = "compilador.log";
-    unsigned int page_size=4 * 1024;
-    unsigned int mem_size=16384 * 1024 ;
-    unsigned int s = bytes(page_size);
-    unsigned int n_entries=pow(2,(32-s));
-    unsigned int mem_pages = mem_size/page_size;
-    /*read input
+    statistics stat;
+    stat.reposition = "fifo";
+    stat.filename = "compilador.log";
+    stat.page_size=4 * 1024;
+    stat.mem_size=128 * 1024 ;
+    unsigned int s = bytes(stat.page_size);
+    unsigned int n_entries=(int)pow(2,(32-s));
+    unsigned int mem_pages = stat.mem_size/stat.page_size;
+    pagetable p(n_entries);
+    memory m;
+    m.mem_pages = mem_pages;
+    m.used = new bool[mem_pages]();
+
+    //read input
     FILE *file;
-    file = fopen(filename,"r");
-    unsigned address;
-    char rw;
-    cout<<"Executando o simulador...\n";
-    while(fscanf(file,"%x %c",&address,&rw)!= EOF)
+    file = fopen(stat.filename.c_str(),"r");
+    if (file == NULL)
     {
-        printf("%x %c \n",address,rw);//use address and rw to query
+        printf("Failed to open file\n");
+        return 0;
+    }
+    cout<<"Executando o simulador...\n";
+    if (stat.reposition.compare("fifo")==0)
+    {
+        fifo(stat, s, n_entries, p, m, file);
+    }
+    else
+    {
+
     }
     fclose(file);
-    */
+    stat.printstatistics();
 
-    //teste breve
+
+    /*teste breve
     unsigned address = 0x0041f7a0;
-    pagetable p;
-    memory m;
-    m.used = new bool[mem_pages];
-    p.f = new unsigned int[n_entries];
-    p.valid = new bool[n_entries];
+
     allocatePage(m,p,address>>s,mem_pages);
     printf("Address: %x\n",address);
-    cout<<"Page number:"<<hex<<(address>>s)<<" "<<"References:"<<p.f[address>>s]<<" Valid:"<<p.valid[address>>s]<<endl;
-    cout<<"Physical memory:"<<m.used[p.f[address>>s]]<<" Offset:"<<getOffset(address,s)<<endl;
-    delete [] p.f;
-    delete [] p.valid;
+    cout << "Page number:" << hex << (address >> s) << " "; p.print_entry(address >> s);
+    cout<<"Physical memory:"<<m.used[p.get_frame(address>>s)]<<" Offset:"<<getOffset(address,s)<<endl;*/
     return 0;
 }
