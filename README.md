@@ -12,3 +12,4 @@
 - Ver se n fiz as coisas iguais mongol(provável pq odeio hardware e entendo exatos quase nada da matéria)
 - reposição LRU(Least Recently Used)
 - reposição criada por agnt msm (tinha pensado em usar o menos frequente, ai vi a aula e isso tá la tbm, triste dia)
+- Makefile (dps q cansar de usar o visual studio posso fazer isso ¯\_(ツ)_/¯)
