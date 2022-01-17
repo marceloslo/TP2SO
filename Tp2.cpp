@@ -20,10 +20,10 @@ void readFile(statistics& stat, unsigned int s, unsigned int n_entries, pagetabl
     unsigned int position;
     int nargs;
     //data *data;
-    //le instruÁıes
+    //le instru√ß√µes
     while ((nargs=fscanf(instructions, "%x %c", &address, &rw)) != EOF)
     {
-        //se a linha est· com formato incorreto, continue execuÁ„o sem consider·-la
+        //se a linha est√° com formato incorreto, continue execu√ß√£o sem consider√°-la
         if (nargs != 2)
             continue;
 
@@ -64,15 +64,15 @@ void readFile(statistics& stat, unsigned int s, unsigned int n_entries, pagetabl
 
 int main(int argc,char*argv[])
 {
+    statistics stat;
     /* USANDO OS ARGUMENTOS EXTERNOS
-    string op=argv[1];
-    string filename=argv[2];
-    unsigned int page_size= atoi(argv[3]) * 1024;//bytes
-    unsigned int mem_size=atoi(argv[4) * 1024;//bytes
+    stat.reposition=argv[1];
+    stat.filename=argv[2];
+    stat.page_size= atoi(argv[3]) * 1024;//bytes
+    stat.mem_size=atoi(argv[4]) * 1024;//bytes
     */
 
     // Testando sem console
-    statistics stat;
     stat.reposition = "lru";
     stat.filename = "compilador.log";
     stat.page_size=4 * 1024;
