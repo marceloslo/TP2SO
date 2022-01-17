@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-Wall
 
-all: main
+all: main clean
 
 main: Tp2.o pagetable.o memory.o
 	$(CC) -o main Tp2.o pagetable.o memory.o
@@ -14,3 +14,6 @@ pagetable.o: pagetable.cpp pagetable.hpp
 
 memory.o: memory.cpp memory.hpp
 	$(CC) -o memory.o memory.cpp -c $(CFLAGS) 
+
+clean:
+	rm -rf memory.o Tp2.o pagetable.o
