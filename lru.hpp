@@ -54,30 +54,6 @@ void writeOperationLRU(int position, memory& m, pagetable& p, statistics& stat)
     //mem[frame].data=data
 }
 
-//first in first out reposition
-void lru(statistics& stat, unsigned int s, unsigned int n_entries, pagetable& p, memory& m, FILE* instructions)
-{
-    unsigned address;
-    char rw;
-    unsigned int position;
-    //data *data;
-    //le instruções
-    while (fscanf(instructions, "%x %c", &address, &rw) != EOF)
-    {
-        position = address >> s;
-        //use address and rw to query
-        if (rw == 'R')
-        {
-            //data = readOperation(frame,m)
-            readOperationLRU(position, m, p, stat);
-        }
-        else
-        {
-            //writeOperation(position,data)
-            writeOperationLRU(position, m, p, stat);
-        }
-    }
-}
 
 
 #endif // !LRU_H

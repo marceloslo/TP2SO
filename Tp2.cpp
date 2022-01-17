@@ -12,6 +12,56 @@
 
 using namespace std;
 
+
+void readFile(statistics& stat, unsigned int s, unsigned int n_entries, pagetable& p, memory& m, FILE* instructions)
+{
+    unsigned address;
+    char rw;
+    unsigned int position;
+    int nargs;
+    //data *data;
+    //le instruções
+    while ((nargs=fscanf(instructions, "%x %c", &address, &rw)) != EOF)
+    {
+        //se a linha está com formato incorreto, continue execução sem considerá-la
+        if (nargs != 2)
+            continue;
+
+        position = address >> s;
+        // first in first out reposition
+        if (stat.reposition.compare("fifo") == 0)
+        {
+            //use address and rw to query
+            if (rw == 'R')
+            {
+                //data = readOperation(frame,m)
+                readOperationFIFO(position, m, p, stat);
+            }
+            else
+            {
+                //writeOperation(position,data)
+                writeOperationFIFO(position, m, p, stat);
+            }
+        }
+        //least recently used reposition
+        else if (stat.reposition.compare("lru") == 0)
+        {
+            //use address and rw to query
+            if (rw == 'R')
+            {
+                //data = readOperation(frame,m)
+                readOperationLRU(position, m, p, stat);
+            }
+            else
+            {
+                //writeOperation(position,data)
+                writeOperationLRU(position, m, p, stat);
+            }
+        }
+    }
+}
+
+
 int main(int argc,char*argv[])
 {
     /* USANDO OS ARGUMENTOS EXTERNOS
@@ -23,7 +73,7 @@ int main(int argc,char*argv[])
 
     // Testando sem console
     statistics stat;
-    stat.reposition = "fifo";
+    stat.reposition = "lru";
     stat.filename = "compilador.log";
     stat.page_size=4 * 1024;
     stat.mem_size=128 * 1024 ;
@@ -42,18 +92,7 @@ int main(int argc,char*argv[])
         return 0;
     }
     cout<<"Executando o simulador...\n";
-    if (stat.reposition.compare("fifo")==0)
-    {
-        fifo(stat, s, n_entries, p, m, file);
-    }
-    else if (stat.reposition.compare("lru") == 0)
-    {
-        lru(stat, s, n_entries, p, m, file);
-    }
-    else
-    {
-
-    }
+    readFile(stat, s, n_entries, p, m, file);
     fclose(file);
     stat.printstatistics();
 

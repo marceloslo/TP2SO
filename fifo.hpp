@@ -51,30 +51,5 @@ void writeOperationFIFO(int position, memory& m, pagetable& p, statistics& stat)
     //mem[frame].data=data
 }
 
-//first in first out reposition
-void fifo(statistics& stat, unsigned int s, unsigned int n_entries, pagetable& p, memory& m, FILE* instructions)
-{
-    unsigned address;
-    char rw;
-    unsigned int position;
-    //data *data;
-    //le instruções
-    while (fscanf(instructions, "%x %c", &address, &rw) != EOF)
-    {
-        position = address >> s;
-        //use address and rw to query
-        if (rw == 'R')
-        {
-            //data = readOperation(frame,m)
-            readOperationFIFO(position, m, p, stat);
-        }
-        else
-        {
-            //writeOperation(position,data)
-            writeOperationFIFO(position, m, p, stat);
-        }
-    }
-}
-
 
 #endif // !FIFO_H
