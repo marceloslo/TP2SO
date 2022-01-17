@@ -48,9 +48,14 @@ int pagetable::find_valid(int frame)
 	return -1;
 }
 
-void pagetable::write_op(int position)
+int pagetable::write_op(int position)
 {
-	entries[position].dirty = true;
+	int valid = get_frame(position);
+	if (valid != -1)
+	{
+		entries[position].dirty = true;
+	}
+	return valid;
 }
 
 bool pagetable::is_dirty(int position)

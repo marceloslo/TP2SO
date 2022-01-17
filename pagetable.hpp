@@ -29,8 +29,8 @@ public:
 	//busca entrada valida que referencia pagina frame da memoria, retorna -1 caso falhe
 	int find_valid(int frame);
 
-	//marca como se tivesse tido operação de escrita(dirty bit = true)
-	void write_op(int position);
+	//marca como se tivesse tido operação de escrita(dirty bit = true) e obtem pagina referenciada
+	int write_op(int position);
 
 	bool is_dirty(int position);
 

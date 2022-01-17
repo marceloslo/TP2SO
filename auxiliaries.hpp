@@ -2,6 +2,7 @@
 #define AUXILIARIES_H
 #include <string>
 #include "pagetable.hpp"
+#include "memory.hpp"
 
 using namespace std;
 //struct auxiliar que simplesmente guarda as estatisticas relevantes e fornece uma impressão simples
@@ -27,12 +28,7 @@ struct statistics
 
 
 //memoria primitiva(idealmente viraria uma classe mais bem feita em um .hpp)
-typedef struct memory
-{
-    unsigned int mem_pages = 0;
-    unsigned int top = 0;
-    bool* used = nullptr;
-}memory;
+
 
 //obtem o s = número de bytes pouco significativos que serão removidos para encontrar a entrada da tabela de pags
 unsigned int bytes(unsigned int page_size)
@@ -71,10 +67,10 @@ bool allocatePage(memory& m, pagetable& p, unsigned int position)
     for (i = 0; i < m.mem_pages; i++)
     {
         //conseguiu alocar uma pagina
-        if (!m.used[i])
+        if (!m.used(i))
         {
             p.set_entry(position, i);
-            m.used[i] = true;
+            m.alocate(i);
             return true;
         }
     }
@@ -96,7 +92,7 @@ void swapoutPage(unsigned int memory_page, memory& m, pagetable& p, statistics& 
         stat.paginas_escritas++;
     }
     //remove pagina da memoria
-    m.used[memory_page] = false;
+    m.free(memory_page);
     //seta entrada da tabela de paginas como invalida
     p.set_invalid(pagetable_entry);
 }
@@ -104,7 +100,7 @@ void swapoutPage(unsigned int memory_page, memory& m, pagetable& p, statistics& 
 void swapinPage(unsigned int memory_page, memory& m, unsigned int pagetable_entry, pagetable& p, statistics& stat)
 {
     //adiciona pagina à memoria
-    m.used[memory_page] = true;
+    m.alocate(memory_page);
     //update page table
     p.set_entry(pagetable_entry, memory_page);
     stat.page_faults++;

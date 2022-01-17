@@ -7,6 +7,8 @@
 #include "pagetable.hpp"
 #include "auxiliaries.hpp"
 #include "fifo.hpp"
+#include "lru.hpp"
+#include "memory.hpp"
 
 using namespace std;
 
@@ -29,9 +31,7 @@ int main(int argc,char*argv[])
     unsigned int n_entries=(int)pow(2,(32-s));
     unsigned int mem_pages = stat.mem_size/stat.page_size;
     pagetable p(n_entries);
-    memory m;
-    m.mem_pages = mem_pages;
-    m.used = new bool[mem_pages]();
+    memory m(mem_pages);
 
     //read input
     FILE *file;
@@ -45,6 +45,10 @@ int main(int argc,char*argv[])
     if (stat.reposition.compare("fifo")==0)
     {
         fifo(stat, s, n_entries, p, m, file);
+    }
+    else if (stat.reposition.compare("lru") == 0)
+    {
+        lru(stat, s, n_entries, p, m, file);
     }
     else
     {
