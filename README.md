@@ -6,7 +6,7 @@
 - Pagetable.hpp / cpp -> classe pagetable com todas funções e elementos que achei necessários para o que já foi feito. Será necessário adicionar last access ao struct auxiliar entry(representa entrada da tabela) quando for fazer a reposição LRU, além de atualizar as funções para refletir isso.
 - auxiliaries.hpp -> várias funções auxiliares úteis que não precisam ser mudadas para o desenvolvimento de métodos de reposição como por exemplo retirar pagina da memória e trocar pagina da memória. Além disso contém um exemplo de função de alocar uma pagina(sem metodo de reposição), a função de obter o número de bytes menos significativos(dada pelo professor na definição do tp) e obter o offset de um endereço(que não sei pra q usa até agr).
 - memory.hpp / cpp ->contém classe memória que é um vetor de páginas de memória(que contem se foi usada ou não e quando foi usada) com suas funções auxiliares.
-- LRU -> contém a implementação do programa com algoritmo LRU, pode-se usar de referencia para os demais.
+- LRU.hpp -> contém a implementação do programa com algoritmo LRU, pode-se usar de referencia para os demais.
 - FIFO.hpp -> contém a implementação do programa com algoritmo FIFO, pode-se usar de referencia para os demais.
 
 
