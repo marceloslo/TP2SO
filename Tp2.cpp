@@ -19,9 +19,9 @@ void readOperation(int position, memory& m, pagetable& p, statistics& stat)
 	{
 		printf("Reading entry %x of table\n",position);
 	}
-    //ve se pagina ja está na memória
+    //ve se pagina ja estÃ¡ na memÃ³ria
     int frame = p.get_frame(position);
-    //caso contrário, aloque a pagina
+    //caso contrÃ¡rio, aloque a pagina
     if (frame == -1)
     {
 		if(stat.debug.compare("debug")==0)
@@ -46,7 +46,7 @@ void readOperation(int position, memory& m, pagetable& p, statistics& stat)
 	{
 		printf("Accessing page %d of memory for reading\n",frame);
 	}
-    //acesse a memória
+    //acesse a memÃ³ria
     m.access(frame);
     //return mem[frame].data
 }
@@ -57,9 +57,9 @@ void writeOperation(int position, memory& m, pagetable& p, statistics& stat)
 	{
 		printf("Writing to entry %x of table\n",position);
 	}
-    //ve se pagina ja está na memória(tenta fazer escrita)
+    //ve se pagina ja estÃ¡ na memÃ³ria(tenta fazer escrita)
     int frame = p.write_op(position);
-    //caso contrário, aloque a pagina
+    //caso contrÃ¡rio, aloque a pagina
     if (frame == -1)
     {
 		if(stat.debug.compare("debug")==0)
@@ -81,7 +81,7 @@ void writeOperation(int position, memory& m, pagetable& p, statistics& stat)
 	{
 		printf("Accessing page %d of memory for write\n",frame);
 	}
-    //acesse a memória
+    //acesse a memÃ³ria
     m.access(frame);
     //mem[frame].data=data
 }
@@ -94,10 +94,10 @@ void readFile(statistics& stat, unsigned int s, unsigned int n_entries, pagetabl
     unsigned int position;
     int nargs;
     //data *data;
-    //le instruções
+    //le instruÃ§Ãµes
     while ((nargs=fscanf(instructions, "%x %c", &address, &rw)) != EOF)
     {
-        //se a linha está com formato incorreto, continue execução sem considerá-la
+        //se a linha estÃ¡ com formato incorreto, continue execuÃ§Ã£o sem considerÃ¡-la
         if (nargs != 2)
 			if(stat.debug.compare("debug")==0)
 			{
@@ -129,6 +129,7 @@ int main(int argc,char*argv[])
     stat.filename=(argc>2) ? argv[2] : "compilador.log";
     stat.page_size= (argc>3) ? atoi(argv[3]) * 1024 : 4*1024;//bytes
     stat.mem_size= (argc > 4) ? atoi(argv[4]) * 1024 : 128*1024;//bytes
+    // use time para tempo e debug para todas informaÃ§Ãµes da execuÃ§Ã£o
     stat.debug= (argc>5) ? argv[5] : "";
 	
 	auto start_time = std::chrono::system_clock::now();
