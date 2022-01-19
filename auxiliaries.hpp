@@ -1,6 +1,7 @@
 #ifndef AUXILIARIES_H
 #define AUXILIARIES_H
 #include <string>
+#include "memory.hpp"
 #include "pagetable.hpp"
 #include "memory.hpp"
 
@@ -14,6 +15,7 @@ struct statistics
     string filename;
     int page_faults = 0;
     int paginas_escritas = 0;
+	string debug;
 
     void printstatistics()
     {
@@ -58,24 +60,6 @@ unsigned int getOffset(unsigned address, unsigned int s)
         s--;
     }
     return address & mask;
-}
-
-//tenta alocar uma pagina(sem reposição, exemplo)
-bool allocatePage(memory& m, pagetable& p, unsigned int position)
-{
-    unsigned int i;
-    for (i = 0; i < m.mem_pages; i++)
-    {
-        //conseguiu alocar uma pagina
-        if (!m.used(i))
-        {
-            p.set_entry(position, i);
-            m.alocate(i);
-            return true;
-        }
-    }
-    //falhou em alocar uma página
-    return false;
 }
 
 void swapoutPage(unsigned int memory_page, memory& m, pagetable& p, statistics& stat)

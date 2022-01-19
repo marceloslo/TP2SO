@@ -1,6 +1,7 @@
 #ifndef FIFO_H
 #define FIFO_H
 #include <string>
+#include "memory.hpp"
 #include "pagetable.hpp"
 #include "auxiliaries.hpp"
 
@@ -18,37 +19,6 @@ void allocatePageFIFO(memory& m, pagetable& p, unsigned int position, statistics
     {
         m.top = m.top % m.mem_pages;
     }
-}
-
-void readOperationFIFO(int position, memory& m, pagetable& p, statistics& stat)
-{
-    //ve se pagina ja está na memória
-    int frame = p.get_frame(position);
-    //caso contrário, aloque a pagina
-    if (frame == -1)
-    {
-        allocatePageFIFO(m, p, position, stat);
-        frame = p.get_frame(position);
-    }
-    //acesse a memória
-    m.access(frame);
-    //return mem[frame].data
-}
-
-void writeOperationFIFO(int position, memory& m, pagetable& p, statistics& stat)
-{
-    //ve se pagina ja está na memória(tenta fazer escrita)
-    int frame = p.write_op(position);
-    //caso contrário, aloque a pagina
-    if (frame == -1)
-    {
-        allocatePageFIFO(m, p, position, stat);
-        //faz a escrita
-        frame = p.write_op(position);
-    }
-    //acesse a memória
-    m.access(frame);
-    //mem[frame].data=data
 }
 
 

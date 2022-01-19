@@ -1,5 +1,7 @@
 #ifndef PAGETABLE_H
 #define PAGETABLE_H
+#include<chrono>
+using namespace std::chrono;
 
 struct entry
 {
@@ -7,6 +9,7 @@ struct entry
 	bool valid=false;
 	//houve escrita
 	bool dirty = false;
+
 	int frame;
 };
 
