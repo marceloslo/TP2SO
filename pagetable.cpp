@@ -1,5 +1,7 @@
 #include "pagetable.hpp"
 #include <iostream>
+#include <chrono>
+
 
 pagetable::pagetable(int n_entries)
 {
