@@ -99,12 +99,13 @@ void readFile(statistics& stat, unsigned int s, unsigned int n_entries, pagetabl
     {
         //se a linha está com formato incorreto, continue execução sem considerá-la
         if (nargs != 2)
+		{
 			if(stat.debug.compare("debug")==0)
 			{
 				printf("Badly formated instruction\n");
 			}
             continue;
-
+		}
         position = address >> s;
 		//use address and rw to query
         if (rw == 'R')
